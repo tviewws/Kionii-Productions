@@ -1,7 +1,8 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { useEffect, useRef } from "react";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import About from "./pages/About";
@@ -12,6 +13,15 @@ import ProjectDetail from "./pages/ProjectDetail";
 import Work from "./pages/Work";
 
 function Router() {
+  const [location] = useLocation();
+  const previousLocation = useRef(location);
+
+  useEffect(() => {
+    if (previousLocation.current === location) return;
+    previousLocation.current = location;
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <Switch>
       <Route path="/" component={Home} />
