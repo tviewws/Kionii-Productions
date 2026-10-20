@@ -22,6 +22,58 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type SiteSettings = {
+  _id: string;
+  _type: "siteSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  heroImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  showreelVideo?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  showreelPoster?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type ProjectGalleryItem = {
   _type: "projectGalleryItem";
   image?: {
@@ -33,13 +85,6 @@ export type ProjectGalleryItem = {
   };
   altText?: string;
   caption?: string;
-};
-
-export type SanityFileAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
 };
 
 export type Project = {
@@ -87,22 +132,6 @@ export type Project = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type Slug = {
@@ -210,11 +239,12 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | SanityImageAssetReference
-  | ProjectGalleryItem
   | SanityFileAssetReference
-  | Project
+  | SiteSettings
   | SanityImageCrop
   | SanityImageHotspot
+  | ProjectGalleryItem
+  | Project
   | Slug
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -224,6 +254,25 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: ../client/src/lib/sanity.ts
+// Variable: homepageSettingsQuery
+// Query: *[_id == "homepageSettings" && _type == "siteSettings"][0] {    heroImage { asset, hotspot, crop, alt },    "showreelVideoUrl": showreelVideo.asset->url,    showreelPoster { asset, hotspot, crop, alt }  }
+export type HomepageSettingsQueryResult = {
+  heroImage: {
+    asset: SanityImageAssetReference | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    alt: string | null;
+  } | null;
+  showreelVideoUrl: string | null;
+  showreelPoster: {
+    asset: SanityImageAssetReference | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    alt: string | null;
+  } | null;
+} | null;
 
 // Source: ../client/src/lib/sanity.ts
 // Variable: portfolioProjectsQuery
@@ -271,6 +320,7 @@ export type PortfolioProjectsQueryResult = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
+    '\n  *[_id == "homepageSettings" && _type == "siteSettings"][0] {\n    heroImage { asset, hotspot, crop, alt },\n    "showreelVideoUrl": showreelVideo.asset->url,\n    showreelPoster { asset, hotspot, crop, alt }\n  }\n': HomepageSettingsQueryResult;
     '\n  *[_type == "project" && defined(slug.current)]\n    | order(sortOrder asc, _createdAt desc) {\n      _id,\n      title,\n      "slug": slug.current,\n      category,\n      medium,\n      client,\n      year,\n      place,\n      services,\n      excerpt,\n      story,\n      featured,\n      sortOrder,\n      coverImage { asset, hotspot, crop, alt },\n      gallery[] {\n        _key,\n        image { asset, hotspot, crop },\n        altText,\n        caption\n      },\n      videoEmbedUrl,\n      "videoFileUrl": videoFile.asset->url,\n      "videoPoster": videoPoster { asset, hotspot, crop }\n    }\n': PortfolioProjectsQueryResult;
   }
 }

@@ -20,6 +20,14 @@ export function sanityImageUrl(source: SanityImageSource | null | undefined, wid
   return imageBuilder.image(source).width(width).auto("format").fit("max").url();
 }
 
+export const homepageSettingsQuery = defineQuery(/* groq */ `
+  *[_id == "homepageSettings" && _type == "siteSettings"][0] {
+    heroImage { asset, hotspot, crop, alt },
+    "showreelVideoUrl": showreelVideo.asset->url,
+    showreelPoster { asset, hotspot, crop, alt }
+  }
+`);
+
 export function normalizeVideoEmbedUrl(value: string | undefined) {
   if (!value) return undefined;
   try {

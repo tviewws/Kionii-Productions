@@ -1,0 +1,17 @@
+Kionii Homepage Showreel Update
+
+This archive contains the 10 project files changed for commit b03d4b9, relative to the previous Homepage Hero update (1ebda72).
+
+1. Back up your existing kionii project folder.
+2. Extract this archive into the existing project root (for example C:\Users\HomePC\Downloads\kionii), keeping folders intact and replacing files when prompted.
+3. Open PowerShell in that project root and run:
+
+   pnpm install
+   pnpm studio:check
+   pnpm studio:build
+   pnpm studio:deploy
+
+4. Refresh https://kionii-productions.sanity.studio/ and open Homepage Settings. Upload a compressed MP4 (H.264) or WebM under Homepage showreel video. Optionally upload a poster image and provide its required alt text. Publish Homepage Settings.
+5. Refresh the Kionii website homepage. The video will appear in the showreel area with controls and will not autoplay.
+
+A regular Sanity file upload serves the original video; it is not adaptively transcoded. Use an appropriately compressed file, not the camera master. This update does not publish the portfolio website.

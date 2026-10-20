@@ -16,7 +16,9 @@
     "build:static": "vite build",
     "studio:dev": "pnpm --filter @kionii/studio dev",
     "studio:build": "pnpm --filter @kionii/studio build",
-    "studio:check": "pnpm --filter @kionii/studio check"
+    "studio:check": "pnpm --filter @kionii/studio check",
+    "studio:typegen": "pnpm --filter @kionii/studio typegen",
+    "studio:deploy": "pnpm --filter @kionii/studio exec sanity deploy"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",

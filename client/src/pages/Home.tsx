@@ -5,20 +5,28 @@ import ProjectCard from "@/components/portfolio/ProjectCard";
 import { SiteShell } from "@/components/portfolio/SiteShell";
 import MediaOverlay from "@/components/portfolio/MediaOverlay";
 import { heroImage, projects as conceptProjects } from "@/data/portfolio";
+import { useHomepageHero } from "@/hooks/useHomepageHero";
 import { usePortfolioProjects } from "@/hooks/usePortfolioProjects";
 
 export default function Home() {
   const [showreelOpen, setShowreelOpen] = useState(false);
-  const { projects, isUsingConceptFallback, conceptImageNotice } = usePortfolioProjects();
+  const {
+    image: homepageHeroImage,
+    alt: homepageHeroAlt,
+    isUsingConceptFallback,
+    showreelVideoUrl,
+    showreelPoster,
+  } = useHomepageHero();
+  const { projects, isUsingConceptFallback: isUsingConceptProjects, conceptImageNotice } = usePortfolioProjects();
   const featuredCandidates = projects.filter((project) => project.featured);
-  const featured = isUsingConceptFallback
+  const featured = isUsingConceptProjects
     ? projects.slice(0, 4)
     : (featuredCandidates.length ? featuredCandidates.slice(0, 4) : projects.slice(0, 4));
   return (
     <SiteShell pageClass="page-home">
       <main>
         <section className="hero-section" aria-labelledby="hero-title">
-          <img className="hero-image" src={heroImage} alt="Concept image: a fashion subject in warm dusk light" />
+          <img className="hero-image" src={homepageHeroImage} alt={homepageHeroAlt} />
           <div className="hero-scrim" />
           <div className="hero-copy">
             <p className="eyebrow hero-kicker">Photography + film <span>·</span> Kenya</p>
@@ -30,7 +38,7 @@ export default function Home() {
             <a href="#selected-work" className="round-arrow" aria-label="Scroll to selected work"><ArrowDown size={17} /></a>
             <span className="hero-coordinate">01 — 04 <i> / </i> Nairobi · Kenya</span>
           </div>
-          <span className="hero-side-note">Concept imagery — placeholder direction</span>
+          {isUsingConceptFallback && <span className="hero-side-note">Concept image — upload a replacement in Homepage Settings</span>}
         </section>
 
         <section className="intro-section section-pad">
@@ -53,16 +61,30 @@ export default function Home() {
           <div className="work-grid">
             {featured.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} />)}
           </div>
-          {isUsingConceptFallback && <p className="concept-disclaimer">{conceptImageNotice}</p>}
+          {isUsingConceptProjects && <p className="concept-disclaimer">{conceptImageNotice}</p>}
         </section>
 
         <section className="film-feature-section section-pad">
           <div className="film-feature-head"><p className="eyebrow">Moving pictures</p><span className="section-number">02 / 04</span></div>
-          <button type="button" className="film-feature-image" onClick={() => setShowreelOpen(true)} aria-label="Open showreel presentation">
-            <img src={heroImage} alt="Concept image for the Kionii Productions showreel" loading="lazy" />
-            <span className="film-feature-overlay"><span className="play-disc"><Play size={17} fill="currentColor" /></span><span>Open the showreel <ArrowUpRight size={15} /></span></span>
-            <span className="film-feature-caption">A first look <i>·</i> concept showreel placeholder</span>
-          </button>
+          {showreelVideoUrl ? (
+            <figure className="film-feature-player">
+              <video
+                controls
+                playsInline
+                preload="none"
+                poster={showreelPoster ?? heroImage}
+                src={showreelVideoUrl}
+                aria-label="Kionii Productions showreel"
+              />
+              <figcaption className="film-feature-player-caption">Kionii Productions <i>·</i> Showreel</figcaption>
+            </figure>
+          ) : (
+            <button type="button" className="film-feature-image" onClick={() => setShowreelOpen(true)} aria-label="Open showreel presentation">
+              <img src={heroImage} alt="Concept image for the Kionii Productions showreel" loading="lazy" />
+              <span className="film-feature-overlay"><span className="play-disc"><Play size={17} fill="currentColor" /></span><span>Open the showreel <ArrowUpRight size={15} /></span></span>
+              <span className="film-feature-caption">A first look <i>·</i> concept showreel placeholder</span>
+            </button>
+          )}
           <div className="film-feature-foot"><h2>Stories, in motion.<br /><em>Made to be felt.</em></h2><Link href="/films" className="text-link">Explore films <ArrowUpRight size={15} /></Link></div>
         </section>
 
@@ -79,7 +101,7 @@ export default function Home() {
 
         <section className="closing-note section-pad"><p className="eyebrow">04 / 04 <span>—</span> The next frame is yours</p><h2>Let's make<br /><em>something lasting.</em></h2><Link href="/contact" className="button-outline">Book a shoot <ArrowUpRight size={16} /></Link></section>
       </main>
-      {showreelOpen && <MediaOverlay image={heroImage} title="The Kionii showreel" description="A showreel visual placeholder. Add the finished Vimeo or YouTube link when the film is ready." mode="film" onClose={() => setShowreelOpen(false)} />}
+      {showreelOpen && <MediaOverlay image={heroImage} title="The Kionii showreel" description="Showreel placeholder. Upload a compressed video under Homepage Settings in Sanity to replace it." mode="film" onClose={() => setShowreelOpen(false)} />}
     </SiteShell>
   );
 }
