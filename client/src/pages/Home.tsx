@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import ProjectCard from "@/components/portfolio/ProjectCard";
 import { SiteShell } from "@/components/portfolio/SiteShell";
 import MediaOverlay from "@/components/portfolio/MediaOverlay";
-import { heroImage, projects as conceptProjects } from "@/data/portfolio";
+import { heroImage } from "@/data/portfolio";
 import { useHomepageHero } from "@/hooks/useHomepageHero";
 import { usePortfolioProjects } from "@/hooks/usePortfolioProjects";
 
@@ -92,8 +92,8 @@ export default function Home() {
           <div className="about-teaser-top"><p className="eyebrow">Behind the lens</p><span className="section-number">03 / 04</span></div>
           <div className="about-teaser-grid">
             <div className="about-image-frame">
-              <img src={conceptProjects[2].image} alt="Concept portrait placeholder — not a portrait of Kionii" loading="lazy" />
-              <span className="image-caption">Portrait placeholder · replace with Kionii's portrait</span>
+              <img src="/lisa-kionii-portrait.webp" alt="Portrait of Lisa Kionii, photographer and videographer at Kionii Productions" loading="lazy" />
+              <span className="image-caption">Lisa Kionii <i>·</i> Photographer + Filmmaker</span>
             </div>
             <div className="about-teaser-copy"><span className="hand-note">The way I see it</span><h2>There is a story<br />in the <em>in-between.</em></h2><p>This space is ready for Kionii's own introduction: how she works, what she notices, and the people she loves to make images with.</p><Link href="/about" className="text-link">Meet the image-maker <ArrowUpRight size={15} /></Link></div>
           </div>
